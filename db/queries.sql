@@ -1,22 +1,15 @@
-UPDATE Employees
-SET ManagerID = new_manager_id
-WHERE EmployeeID = employee_id;
-SELECT *
-FROM Employees
-WHERE ManagerID = manager_id;
-SELECT e.*
-FROM Employees e
-JOIN Roles r ON e.RoleID = r.RoleID
-WHERE r.DepartmentID = department_id;
-DELETE FROM Employees
-WHERE RoleID = role_id;
-DELETE FROM Roles
-WHERE DepartmentID = department_id;
-DELETE FROM Departments WHERE DepartmentID = department_id;
-SELECT r.DepartmentID, d.DepartmentName, SUM(e.Salary) AS TotalBudget
-FROM Employees e
-JOIN Roles r ON e.RoleID = r.RoleID
-JOIN Departments d ON r.DepartmentID = d.DepartmentID
-WHERE r.DepartmentID = department_id
-GROUP BY r.DepartmentID, d.DepartmentName;
+-- All Departments
+SELECT id AS Department_ID, name AS Department_Name
+FROM department;
 
+-- All Roles 
+SELECT role.title AS Role_Title, role.id AS Role_ID, department.name AS Department_Name, role.salary AS Salary
+FROM role
+JOIN department ON role.department_id = department.id;
+
+-- All Employees
+SELECT e.id AS Employee_ID, e.first_name AS First_Name, e.last_name AS Last_Name, r.title AS Job_Title, d.name AS Department_Name, r.salary AS Salary, CONCAT(m.first_name, ' ', m.last_name) AS Manager 
+FROM employee e
+JOIN role r ON e.role_id = r.id 
+JOIN department d ON r.department_id = d.id
+LEFT JOIN employee m ON e.manager_id = m.id;
